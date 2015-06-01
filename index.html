@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Browserception</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<style>
+		iframe {
+			width:100%;
+			min-height:500px;
+			border:none;
+			border-radius:2px;
+		}
+
+		input.urlBar {
+			display: inline-block;
+			width: 250px;
+		}
+
+		.toolbar {
+			display:block;
+			width:500px;
+			margin:20px auto;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2 class="text-center">
+					<i class="fa fa-windows"></i> Internet Explorer 13
+				</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+					<div class="form-group toolbar">
+						<input id="urlInput" type="text" name="search" placeholder="Type in your own" class="form-control urlBar"/>
+						<button id="goToUrl" class="btn btn-success">Go</button>
+						<div class="btn-group" role="group">
+							<div class="btn-group" role="group">
+								<button id="previous" type="button" class="btn btn-default">
+									<i class="fa fa-arrow-left"></i> Back
+								</button>
+								<button id="next" type="button" class="btn btn-default">
+									<i class="fa fa-arrow-right"></i> Next
+								</button>
+								<button id="home" type="button" class="btn btn-default">
+									<i class="fa fa-home"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<iframe id="frame" src="http://www.theuselessweb.com"></iframe>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+	<script type="text/javascript">
+	$(document).ready(function() {
+
+		var sites = ["http://theuselessweb.com"];
+
+		sitesIndex = 0;
+
+		$(document).on('click', '#goToUrl', function() {
+			
+			var website = $('#urlInput').val();
+
+			if(website.substr(0,7) != 'http://'){
+				website = 'http://' + website;
+			}
+
+			$('#frame').attr('src', website);
+			$('#urlInput').val(website);
+
+			sites.push(website);
+
+			$('#previous').on('click', function(){
+				sitesIndex = (sitesIndex + sites.length - 1) % (sites.length);    
+				
+				var website = sites[sitesIndex];
+
+				$('#urlInput').val(website);
+
+				$('#frame').attr('src', website);
+			});
+
+
+			$('#next').on('click', function(){
+				sitesIndex = (sitesIndex + sites.length + 1) % (sites.length);    
+				
+				var website = sites[sitesIndex];
+
+				$('#urlInput').val(website);
+
+				$('#frame').attr('src', website);
+			});
+
+			// console.log(sites);
+
+		});
+
+		$('#home').on('click', function() {
+
+			$('#frame').attr('src', 'http://theuselessweb.com');
+		})
+
+	});
+	</script>
+</body>
+</html>
